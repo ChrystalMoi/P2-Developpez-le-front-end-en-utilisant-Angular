@@ -1,7 +1,9 @@
 // Définition des couleurs par pays
-$france-color: #FF5733;
-$italy-color: #3498DB;
-$espagne-color: #fdfd07;
+$france-color: #FF0000 ;
+$italy-color: #0000FF ;
+$espagne-color: #FFFF00;
+$usa-color: #00FF00;
+$allemagne-color: #7f00ff;
 
 // Styles pour les sections par pays
 .france-section {
@@ -14,7 +16,20 @@ $espagne-color: #fdfd07;
   transition: background-color 0.3s;
 }
 
-// Ajoutez les styles pour les autres pays de la même manière
+.espagne-section {
+  background-color: $espagne-color;
+  transition: background-color 0.3s;
+}
+
+.usa-section {
+  background-color: $usa-color;
+  transition: background-color 0.3s;
+}
+
+.allemagne-section {
+  background-color: $allemagne-color;
+  transition: background-color 0.3s;
+}
 
 // Styles au survol
 .france-section:hover {
@@ -25,4 +40,14 @@ $espagne-color: #fdfd07;
   background-color: lighten($italy-color, 10%);
 }
 
-// Ajoutez les styles pour les autres pays de la même manière
+.espagne-section:hover {
+  background-color: lighten($espagne-color, 10%);
+}
+
+.usa-section:hover {
+  background-color: lighten($usa-color, 10%);
+}
+
+.allemagne-section:hover {
+  background-color: lighten($allemagne-color, 10%);
+}
