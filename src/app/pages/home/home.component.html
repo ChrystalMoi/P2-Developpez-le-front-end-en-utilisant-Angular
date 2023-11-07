@@ -1,3 +1,21 @@
-<h2>Olympic games app</h2>
-<hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
+<h2>Test graphique</h2>
+
+<br>
+
+<!-- Utilisation d'un canvas pour afficher le graphique avec les propriétés définies -->
+<div style="display: block;">
+  <!-- Début du graphique -->
+  <!-- Information :
+    Ici nous avons un [datasets]="barChartData" pour les données du graphique ;
+    Ensuite, nous avons un [labels]="barChartLabels" pour les libellés (étiquettes) pour l'axe des x;
+    Ensuite, nous avons un [legend]="barChartLegend" pour afficher ou masquer la légende;
+    Et pour finir, nous avons un [chartType]="barChartType" qui donne le type de graphique (ici un graphique en barres)
+  -->
+  <canvas baseChart
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+
+          [legend]="barChartLegend"
+          [chartType]="barChartType"></canvas>
+  <!-- Fin du graphique -->
+</div>
