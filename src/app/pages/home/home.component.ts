@@ -34,7 +34,9 @@ export class HomeComponent implements OnInit {
   };
 
   // Libellés (étiquettes) pour l'axe des x du graphique
-  public barChartLabels = ['Label 1', 'Label 2', 'Label 3', 'Label 4'];
+  // Initialisation de barChartLabels avec un tableau vide
+  public barChartLabels: string[] = [];
+  //public barChartLabels = ['Label 1', 'Label 2', 'Label 3', 'Label 4'];
 
   // Type de graphique (Graphique en barres)
   public barChartType: ChartType = 'bar';
@@ -43,30 +45,39 @@ export class HomeComponent implements OnInit {
   public barChartLegend = true;
 
   // Les données du graphique (initialisées avec un tableau vide)
-  public barChartData: ChartDataSets[] = [{ data: [] as number[], label: 'Médailles' }];
+  public barChartData: ChartDataSets[] = [{ data: [] as number[], label: 'Nombre de médailles' }];
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    // Récupération des données à partir du fichier JSON (avec chemin vers le olympic.json)
-    this.http.get<Country[]>('src/assets/mock/olympic.json').subscribe(data => {
-
+    // Récupération des données à partir du fichier JSON (olympic.json)
+    this.http.get<Country[]>('assets/mock/olympic.json').subscribe(data => {
       if (Array.isArray(data)) {
-        // Exemple de sélection du premier pays (Italie)
-        const selectedCountry = data[0];
+        // Initialisation d'un tableau pour stocker le total des médailles de chaque pays
+        const totalMedalsData: number[] = [];
 
-        if (selectedCountry && Array.isArray(selectedCountry.participations)) {
-          // Extraction des données des médailles du pays sélectionné
-          const medalsData = selectedCountry.participations.map(participation => participation.medalsCount) as number[];
+        // Parcours de la liste des pays
+        data.forEach(country => {
+          if (Array.isArray(country.participations)) {
+            // Calcul du total des médailles pour le pays actuel en utilisant la méthode reduce
+            const totalMedals = country.participations.reduce(
+              (sum, participation) => sum + participation.medalsCount,
+              0
+            );
 
-          // Mise à jour des données du graphique
-          this.barChartData[0].data = medalsData;
+            // Ajout du total des médailles du pays au tableau totalMedalsData
+            totalMedalsData.push(totalMedals);
+          }
 
-          // Mise à jour des libellés du graphique en fonction des années
-          this.barChartLabels = selectedCountry.participations.map(participation => participation.year.toString());
-        }
+          // Ajout du nom du pays à la liste des libellés du graphique
+          this.barChartLabels.push(country.country);
+        });
+
+        // Mise à jour des données du graphique avec les totaux de médailles par pays
+        this.barChartData[0].data = totalMedalsData;
       }
     });
   }
+
 }
 //Fin class
