@@ -1,0 +1,9 @@
+/* home.component.css */
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 50%;
+  margin: 0 auto;
+}
