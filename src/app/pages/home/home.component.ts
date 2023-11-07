@@ -52,11 +52,11 @@ export class HomeComponent implements OnInit {
   public barChartColors: Color[] = [
     {
       backgroundColor: [
-        '#FF0000',  // France
-        '#0000FF',  // Italy
-        '#FFFF00',  // Spain
-        '#00FF00',  // United States
-        '#7F00FF',  // Germany
+        '#9780A1',  // France
+        '#956065',  // Italy
+        '#B8CBE7',  // Spain
+        '#89A1DB',  // United States
+        '#793D52',  // Germany
       ],
     },
   ];
