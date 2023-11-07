@@ -16,7 +16,9 @@ Exécutez `ng build` pour construire le projet. Les artefacts de construction se
 Une architecture a déjà été définie pour le projet. Il s'agit simplement d'une suggestion. L'architecture prédéfinie comprend (en plus de l'architecture Angular par défaut) les éléments suivants :
 
 Dossier `components` : contient tous les composants réutilisables.
+
 Dossier `page` : contient les composants utilisés pour la navigation.
+
 Dossier `core` : contient la logique métier (les dossiers `services` et `models`).
 
 Une fois que vous les maîtrisez, vous devriez continuer en créant les interfaces TypeScript à l'intérieur du dossier `models`. 
