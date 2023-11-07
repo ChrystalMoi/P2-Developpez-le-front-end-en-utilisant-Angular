@@ -19,5 +19,5 @@ Dossier `components` : contient tous les composants réutilisables.
 Dossier `page` : contient les composants utilisés pour la navigation.
 Dossier `core` : contient la logique métier (les dossiers `services` et `models`).
 
-Une fois que vous les maîtrisez, vous devriez continuer en créant les interfaces TypeScript à l'intérieur du dossier `models. 
+Une fois que vous les maîtrisez, vous devriez continuer en créant les interfaces TypeScript à l'intérieur du dossier `models`. 
 Comme vous pouvez le constater, j'ai déjà créé deux fichiers correspondant aux données incluses dans `olympic.json`. Avec vos interfaces, améliorez le code en remplaçant chaque `any` par l'interface correspondante.
