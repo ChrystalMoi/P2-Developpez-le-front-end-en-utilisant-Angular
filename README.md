@@ -1,28 +1,29 @@
-# P2-Developpez-le-front-end-en-utilisant-Angular
+# OlympicGamesStarter
 
-Ce projet a été généré avec [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
 
-Installer vos node_modules avant de commencer (`npm install`).
+Don't forget to install your node_modules before starting (`npm install`).
 
-## Serveur de développement
+## Development server
 
-Exécutez `ng serve` pour lancer le serveur de développement. Accédez à `http://localhost:4200/`. L'application se rechargera automatiquement en cas de modification de l'un des fichiers source.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Construction
+## Build
 
-Exécutez `ng build` pour construire le projet. Les artefacts de construction seront stockés dans le répertoire `dist/`.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Par où commencer
+## Where to start
 
-Une architecture a déjà été définie pour le projet. Il s'agit simplement d'une suggestion.
-L'architecture prédéfinie comprend (en plus de l'architecture Angular par défaut) les éléments suivants :
+As you can see, an architecture has already been defined for the project. It is just a suggestion, you can choose to use your own. The predefined architecture includes (in addition to the default angular architecture) the following:
 
-- Dossier `components` : contient tous les composants réutilisables.
-- Dossier `pages` : contient les composants utilisés pour la navigation.
-- Dossier `core` : contient la logique métier (les dossiers `services` et `models`).
+- `components` folder: contains every reusable components
+- `pages` folder: contains components used for routing
+- `core` folder: contains the business logic (`services` and `models` folders)
 
-Une fois que vous les maîtrisez, vous devriez continuer en créant les interfaces TypeScript à l'intérieur du dossier `models`. Comme vous pouvez le constater, j'ai déjà créé deux fichiers correspondant aux données incluses dans `olympic.json`. Avec vos interfaces, améliorez le code en remplaçant chaque `any` par l'interface correspondante.
+I suggest you to start by understanding this starter code. Pay an extra attention to the `app-routing.module.ts` and the `olympic.service.ts`.
 
-Vous êtes maintenant prêt à mettre en œuvre les fonctionnalités demandées.
+Once mastered, you should continue by creating the typescript interfaces inside the `models` folder. As you can see I already created two files corresponding to the data included inside the `olympic.json`. With your interfaces, improve the code by replacing every `any` by the corresponding interface.
 
-Bonne chance !
+You're now ready to implement the requested features.
+
+Good luck!

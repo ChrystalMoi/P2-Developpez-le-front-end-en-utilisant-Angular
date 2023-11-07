@@ -7,28 +7,24 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class OlympicService {
-  private olympicUrl = './assets/mock/olympic.json'; // URL du fichier JSON avec les données olympiques
-  private olympics$ = new BehaviorSubject<any>(undefined); // Un conteneur pour stocker les données olympiques
+  private olympicUrl = './assets/mock/olympic.json';
+  private olympics$ = new BehaviorSubject<any>(undefined);
 
   constructor(private http: HttpClient) {}
 
-  // Charge les données initiales à partir du fichier JSON
   loadInitialData() {
     return this.http.get<any>(this.olympicUrl).pipe(
-      // Met à jour les données quand elles sont chargées
       tap((value) => this.olympics$.next(value)),
       catchError((error, caught) => {
-        // Gérer les erreurs, affiche les erreurs dans la console
+        // TODO: improve error handling
         console.error(error);
-        // Indique aux autres parties de l'application qu'une erreur s'est produite
+        // can be useful to end loading state and let the user know something went wrong
         this.olympics$.next(null);
-        // Permet de traiter l'erreur ailleurs si nécessaire
         return caught;
       })
     );
   }
 
-  // Permet d'obtenir les données olympiques sous forme d'observable
   getOlympics() {
     return this.olympics$.asObservable();
   }
