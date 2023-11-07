@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 //import { Observable, of } from 'rxjs';
 //import { OlympicService } from 'src/app/core/services/olympic.service';
 import { HttpClient } from '@angular/common/http';
-import { ChartDataSets, ChartType } from 'chart.js';
+import { ChartDataSets, ChartType, ChartColor } from 'chart.js';
+import { Color } from 'ng2-charts';
 
 // Interfaces pour définir la structure des données provenant du fichier JSON
 interface Participation {
@@ -19,10 +20,12 @@ interface Country {
   participations: Participation[];
 }
 
+type CountryClassMap = { [key: string]: string };
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  styleUrls: ['./home.component.css'],
 })
 
 //Début class
@@ -36,7 +39,6 @@ export class HomeComponent implements OnInit {
   // Libellés (étiquettes) pour l'axe des x du graphique
   // Initialisation de barChartLabels avec un tableau vide
   public barChartLabels: string[] = [];
-  //public barChartLabels = ['Label 1', 'Label 2', 'Label 3', 'Label 4'];
 
   // Type de graphique (Graphique en cercle)
   public barChartType: ChartType = 'pie';
@@ -47,6 +49,17 @@ export class HomeComponent implements OnInit {
   // Les données du graphique (initialisées avec un tableau vide)
   public barChartData: ChartDataSets[] = [{ data: [] as number[], label: 'Nombre de médailles' }];
 
+  public barChartColors: Color[] = [
+    {
+      backgroundColor: [
+        '#FF0000',  // France
+        '#0000FF',  // Italy
+        '#FFFF00',  // Spain
+        '#00FF00',  // United States
+        '#7F00FF',  // Germany
+      ],
+    },
+  ];
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -71,6 +84,7 @@ export class HomeComponent implements OnInit {
 
           // Ajout du nom du pays à la liste des libellés du graphique
           this.barChartLabels.push(country.country);
+
         });
 
         // Mise à jour des données du graphique avec les totaux de médailles par pays
@@ -78,6 +92,5 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-
 }
 //Fin class
