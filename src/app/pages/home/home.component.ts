@@ -38,8 +38,8 @@ export class HomeComponent implements OnInit {
   public barChartLabels: string[] = [];
   //public barChartLabels = ['Label 1', 'Label 2', 'Label 3', 'Label 4'];
 
-  // Type de graphique (Graphique en barres)
-  public barChartType: ChartType = 'bar';
+  // Type de graphique (Graphique en cercle)
+  public barChartType: ChartType = 'pie';
 
   // Afficher la légende du graphique
   public barChartLegend = true;

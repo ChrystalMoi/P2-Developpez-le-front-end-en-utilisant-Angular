@@ -1,0 +1,28 @@
+// Définition des couleurs par pays
+$france-color: #FF5733;
+$italy-color: #3498DB;
+$espagne-color: #fdfd07;
+
+// Styles pour les sections par pays
+.france-section {
+  background-color: $france-color;
+  transition: background-color 0.3s; // Transition de couleur pour l'effet de survol
+}
+
+.italy-section {
+  background-color: $italy-color;
+  transition: background-color 0.3s;
+}
+
+// Ajoutez les styles pour les autres pays de la même manière
+
+// Styles au survol
+.france-section:hover {
+  background-color: lighten($france-color, 10%); // Éclaircit la couleur de 10% au survol
+}
+
+.italy-section:hover {
+  background-color: lighten($italy-color, 10%);
+}
+
+// Ajoutez les styles pour les autres pays de la même manière
