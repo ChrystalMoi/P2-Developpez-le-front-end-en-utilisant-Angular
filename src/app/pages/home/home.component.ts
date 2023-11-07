@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
   public barChartLegend = true;
 
   // Les données du graphique (initialisées avec un tableau vide)
-  public barChartData: ChartDataSets[] = [{ data: [] as number[], label: 'Medals' }];
+  public barChartData: ChartDataSets[] = [{ data: [] as number[], label: 'Médailles' }];
 
   constructor(private http: HttpClient) {}
 
