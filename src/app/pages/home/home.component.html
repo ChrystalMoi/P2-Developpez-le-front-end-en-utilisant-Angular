@@ -1,19 +1,15 @@
-<h2>Test graphique</h2>
+<div class="page-container">
+  <div class="title-container">
+    <h2 class="title">Melals per Country</h2>
+  </div>
 
-<br>
-<!-- Information :
-    Ici nous avons un [datasets]="barChartData" pour les données du graphique ;
-    Ensuite, nous avons un [labels]="barChartLabels" pour les libellés (étiquettes) pour l'axe des x;
-    Ensuite, nous avons un [legend]="barChartLegend" pour afficher ou masquer la légende;
-    Et pour finir, nous avons un [chartType]="barChartType" qui donne le type de graphique (ici un graphique en barres)
-  -->
-
-<!-- Utilisation d'un canvas pour afficher le graphique avec les propriétés définies -->
-<div class="chart-container">
-  <canvas baseChart
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [legend]="barChartLegend"
-          [chartType]="barChartType"
-          [colors]="barChartColors"></canvas>
+  <!-- Le reste de votre contenu -->
+  <div class="chart-container">
+    <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [legend]="barChartLegend"
+            [chartType]="barChartType"
+            [colors]="barChartColors"></canvas>
+  </div>
 </div>
