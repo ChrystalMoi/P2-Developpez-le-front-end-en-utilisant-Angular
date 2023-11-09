@@ -4,21 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ChartDataSets, ChartType } from 'chart.js';
 import { Color } from 'ng2-charts';
-
-// Interfaces pour définir la structure des données provenant du fichier JSON
-interface Participation {
-  id: number;
-  year: number;
-  city: string;
-  medalsCount: number;
-  athleteCount: number;
-}
-
-interface Country {
-  id: number;
-  country: string;
-  participations: Participation[];
-}
+import { Country } from 'src/app/pages/models/Country';
 
 //type CountryClassMap = { [key: string]: string };
 
