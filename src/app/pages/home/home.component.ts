@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 //import { Observable, of } from 'rxjs';
 //import { OlympicService } from 'src/app/core/services/olympic.service';
 import { HttpClient } from '@angular/common/http';
-import { ChartDataSets, ChartType, ChartColor } from 'chart.js';
+import { ChartDataSets, ChartType } from 'chart.js';
 import { Color } from 'ng2-charts';
 
 // Interfaces pour définir la structure des données provenant du fichier JSON
@@ -20,7 +20,7 @@ interface Country {
   participations: Participation[];
 }
 
-type CountryClassMap = { [key: string]: string };
+//type CountryClassMap = { [key: string]: string };
 
 @Component({
   selector: 'app-home',
@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   // Initialisation de barChartLabels avec un tableau vide
   public barChartLabels: string[] = [];
 
-  // Type de graphique (Graphique en cercle)
+  // Type de graphique (Graphique en cercle (pie) ou donut (doughnut))
   public barChartType: ChartType = 'pie';
 
   // Afficher la légende du graphique
@@ -75,8 +75,7 @@ export class HomeComponent implements OnInit {
           if (Array.isArray(country.participations)) {
             // Calcul du total des médailles pour le pays actuel en utilisant la méthode reduce
             const totalMedals = country.participations.reduce(
-              (sum, participation) => sum + participation.medalsCount,
-              0
+              (sum, participation) => sum + participation.medalsCount, 0
             );
 
             // Ajout du total des médailles du pays au tableau totalMedalsData
