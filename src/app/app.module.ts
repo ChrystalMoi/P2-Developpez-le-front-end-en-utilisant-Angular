@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ChartsModule } from 'ng2-charts';
-import { DetailComponent } from './detail/detail.component';
+import { DetailComponent } from './pages/detail/detail.component';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NotFoundComponent, DetailComponent],
