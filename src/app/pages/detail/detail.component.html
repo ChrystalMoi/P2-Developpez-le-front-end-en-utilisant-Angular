@@ -1,1 +1,19 @@
-<p>detail works!</p>
+<div class="page-container">
+  <div class="title-container">
+    <h2 class="title">{{ selectedCountry?.country }}</h2>
+  </div>
+
+  <div class="chart-container">
+    <canvas baseChart
+      [datasets]="lineChartData"
+      [labels]="lineChartLabels"
+      [options]="lineChartOptions"
+      [legend]="lineChartLegend"
+      [chartType]="lineChartType">
+    </canvas>
+  </div>
+
+  <div class="back-button-container">
+    <button class="back-button" (click)="goBack()">Retour</button>
+  </div>
+</div>
