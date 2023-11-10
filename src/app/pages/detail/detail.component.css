@@ -1,0 +1,41 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-container {
+  background-color: #00838F;
+  padding: 2px;
+  border-radius: 10px;
+}
+
+.title {
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  margin: 5px 5px;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  height: 70%;
+  margin: 0 auto;
+}
+
+.back-button-container {
+  margin-top: 10px;
+}
+
+.back-button {
+  background-color: #00838F;
+  padding: 3px 10px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+}
