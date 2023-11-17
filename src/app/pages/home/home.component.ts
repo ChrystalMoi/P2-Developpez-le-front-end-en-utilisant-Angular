@@ -15,7 +15,9 @@ import { Router } from '@angular/router';
 
 // Début de la classe du composant
 export class HomeComponent implements OnInit {
-  // Déclaration de la table de correspondance des noms de pays vers les identifiants (statique)
+  /**
+   * Déclaration de la table de correspondance des noms de pays vers les identifiants (statique)
+   */
   private static readonly countryIdMap: { [key: string]: number } = {
     'Italy': 1,
     'Spain': 2,
@@ -24,25 +26,37 @@ export class HomeComponent implements OnInit {
     'France': 5,
   };
 
-  // Options du graphique
+  /**
+   * Options du graphique
+   */
   public chartOptions = {
     responsive: true,
     onClick: (event: MouseEvent, chartElements: ChartPoint[]) => this.onChartClick(event, chartElements),
   };
 
-  // Libellés (étiquettes) pour l'axe des x du graphique ; Initialisation de chartLabels avec un tableau vide
+  /**
+   * Libellés (étiquettes) pour l'axe des x du graphique;
+   *
+   * Initialisation de chartLabels avec un tableau vide
+   */
   public chartLabels: string[] = [];
 
-  // Type de graphique (Graphique en cercle (pie) ou donut (doughnut))
+  /**
+   * Type de graphique (Graphique en cercle (pie) ou donut (doughnut))
+   */
   public chartType: ChartType = 'pie';
 
   // Afficher la légende du graphique
   public chartLegend = true;
 
-  // Les données du graphique (initialisées avec un tableau vide)
+  /**
+   * Les données du graphique (initialisées avec un tableau vide)
+   */
   public chartData: ChartDataSets[] = [{ data: [] as number[], label: 'Nombre de médailles' }];
 
-  // Couleurs spécifiées pour chaque segment du graphique
+  /**
+   * Couleurs spécifiées pour chaque segment du graphique
+   */
   public chartColors: Color[] = [
     {
       backgroundColor: [
@@ -55,13 +69,21 @@ export class HomeComponent implements OnInit {
     },
   ];
 
-  // Injection du service OlympicService dans le constructeur
+  /**
+   * Injection du service OlympicService dans le constructeur
+   * @param olympicService
+   * @param router
+   */
   constructor(private olympicService: OlympicService, private router: Router) {}
 
-  // Ajoute une propriété pour stocker l'ID du pays sélectionné
+  /**
+   * Ajoute une propriété pour stocker l'ID du pays sélectionné
+   */
   selectedCountryId: number | null = null;
 
-  // Méthode ngOnInit qui est appelée lors de l'initialisation du composant
+  /**
+   * Méthode ngOnInit qui est appelée lors de l'initialisation du composant
+   */
   ngOnInit(): void {
 
     // Appel à la méthode getOlympics du service OlympicService pour récupérer les données
@@ -103,7 +125,11 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // Méthode appelée lorsqu'un segment du graphique est cliqué
+  /**
+   * Méthode appelée lorsqu'un segment du graphique est cliqué
+   * @param event
+   * @param chartElements
+   */
   onChartClick(event: MouseEvent, chartElements: CustomChartPoint[]): void {
     if (chartElements && chartElements.length > 0) {
       const clickedIndex: number | undefined = chartElements[0]._index;
