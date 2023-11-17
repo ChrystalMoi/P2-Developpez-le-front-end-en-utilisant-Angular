@@ -4,35 +4,41 @@
   justify-content: center;
   align-items: center;
   font-family: 'Arial', sans-serif;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .title-container {
   background-color: #00838F;
   padding: 2px;
   border-radius: 10px;
+  box-sizing: border-box;
 }
 
 .title {
   color: white;
   font-size: 24px;
   text-align: center;
-  margin: 5px 5px;
+  margin: 5px 0;
 }
 
 .info-container {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap; /* Permet aux boîtes info de passer à la ligne sur les petits écrans */
+  justify-content: center;
   margin-top: 10px;
 }
 
 .info-box {
   border: 2px solid #00838F;
   border-radius: 10px;
-  padding: 5px;
-  margin-right: 10px; /* Espacement entre les cases */
+  padding: 10px;
+  margin: 10px 5px; /* Espacement entre les cases */
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: calc(33.33% - 20px); /* Utilisation de calc pour calculer la largeur sur trois colonnes avec espace entre */
+  box-sizing: border-box;
 }
 
 .info-box h5 {
@@ -45,17 +51,17 @@
   margin-bottom: 5px;
 }
 
-.chart-container {
-  margin-top: 20px;
+.chart-container canvas {
+  max-width: 100%; /* Pour que le graphique ne soit pas plus large que son conteneur */
 }
 
 .chart-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60%;
-  height: 60%;
+  width: 50%;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .back-button-container {
@@ -69,5 +75,22 @@
   color: #fff;
   cursor: pointer;
   border: none;
-  font-size: 120%;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 480px) {
+  .chart-container {
+    flex-direction: column;
+    width: 100%;
+    align-items: center; /* Centre le graphique lorsque la direction est en colonne */
+  }
+
+  .info-container {
+    flex-direction: column; /* Passage à la disposition en colonne pour les boîtes info */
+  }
+
+  .info-box {
+    width: 100%;
+    margin: 10px 0;
+  }
 }
