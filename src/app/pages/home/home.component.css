@@ -9,6 +9,7 @@
   padding: 10px;
 }
 
+/*-- Partie titre --*/
 .title-container {
   background-color: #00838F;
   padding: 2px;
@@ -23,6 +24,7 @@
   margin: 5px 0;
 }
 
+/*-- Partie graphique --*/
 .chart-container {
   display: flex;
   justify-content: center;
@@ -32,6 +34,7 @@
   padding: 10px;
 }
 
+/*-- Partie pour le responsive --*/
 @media screen and (max-width: 480px) {
   .chart-container {
     flex-direction: column;

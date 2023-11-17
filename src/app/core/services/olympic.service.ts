@@ -25,6 +25,14 @@ export class OlympicService {
     );
   }
 
+  //Créer une fonction getDataByCountry(idCountry) : service appeler dans detail.component.ts
+  //retourne un observable
+
+  //creer 3 services (nb de médails par participation + nom country + nb athlète)
+  //getMedals
+  //service appeler dans le composant (sum a faire ici)
+  //+ faire doc (/** + entre)
+
   getOlympics() {
     return this.olympics$.asObservable();
   }

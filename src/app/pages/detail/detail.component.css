@@ -8,6 +8,7 @@
   box-sizing: border-box;
 }
 
+/*-- Partie titre --*/
 .title-container {
   background-color: #00838F;
   padding: 2px;
@@ -22,6 +23,7 @@
   margin: 5px 0;
 }
 
+/*-- Partie avec les cases/boîtes --*/
 .info-container {
   display: flex;
   flex-wrap: wrap; /* Permet aux boîtes info de passer à la ligne sur les petits écrans */
@@ -50,8 +52,9 @@
   margin-bottom: 5px;
 }
 
+/*-- Partie graphique --*/
 .chart-container canvas {
-  max-width: 100%; /* Pour que le graphique ne soit pas plus large que son conteneur */
+  max-width: 100%;
 }
 
 .chart-container {
@@ -63,6 +66,7 @@
   box-sizing: border-box;
 }
 
+/*-- Bouton de retour a la page principale --*/
 .back-button-container {
   margin-top: 10px;
 }
@@ -77,6 +81,7 @@
   font-size: 16px;
 }
 
+/*-- Partie pour le responsive --*/
 @media screen and (max-width: 480px) {
   .chart-container {
     flex-direction: column;

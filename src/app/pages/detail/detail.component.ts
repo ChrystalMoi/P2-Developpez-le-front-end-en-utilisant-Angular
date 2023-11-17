@@ -32,32 +32,46 @@ export class DetailComponent implements OnInit {
   ngOnInit(): void {
     // Pour écouter les modifications des paramètres de l'URL
     this.route.params.pipe(
-      // "switchMap pour passer à un nouvel observable (this.olympicService.getOlympics())
+      // Utilise "switchMap" pour passer à un nouvel observable (this.olympicService.getOlympics())
       switchMap(params => {
         const countryId: number = +params['id'];
+
+        // Appelle le service pour obtenir les données olympiques
         return this.olympicService.getOlympics().pipe(
-          // map pour traiter les données reçues
+          // Utilise map pour traiter les données reçues
           map((data: Country[]) => {
+            // Trouve le pays correspondant à l'ID
             const selectedCountry: Country | undefined = data.find((country: Country) => country.id === countryId);
             return { selectedCountry, countryId };
           })
         );
       })
+
     ).subscribe(({ selectedCountry, countryId }) => {
+      // Si le pays est trouvé
       if (selectedCountry) {
+        // Maj la propriété selectedCountry
         this.selectedCountry = selectedCountry;
+
+        // Met à jour les labels du graphique avec les années des participations
         this.lineChartLabels = selectedCountry.participations.map((participation: Participation) => participation.year.toString());
+
+        // Maj les données du graphique avec le nombre de médailles par participation
         this.lineChartData[0].data = selectedCountry.participations.map((participation: Participation) => participation.medalsCount);
       }
     });
   }
 
+  //TODO : ajouter le ngDestroy qui se déclanche quand on quitte la page
+  // avec le unsubscribe
+
+  //Méthode pour le bouton retour à la page home
   goBack(): void {
-    // Utilisation du service Router pour naviguer vers la page d'accueil
     this.router.navigate(['/home']);
+
   }
 
-  // Méthode pour obtenir le total de médailles
+  // Méthode pour obtenir le total de médailles (case 2)
   getTotalMedals(): number {
     if (this.selectedCountry && Array.isArray(this.selectedCountry.participations)) {
       return this.selectedCountry.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);
@@ -65,7 +79,7 @@ export class DetailComponent implements OnInit {
     return 0;
   }
 
- // Méthode pour obtenir le total d'athlètes
+ // Méthode pour obtenir le total d'athlètes (case 3)
   getTotalAthletes(): number {
     if (this.selectedCountry && Array.isArray(this.selectedCountry.participations)) {
       // Utilisation de la fonction reduce pour calculer le total d'athlètes
