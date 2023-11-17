@@ -1,4 +1,5 @@
 <div class="page-container">
+  <!-- Titre selon le pays selectionner-->
   <div class="title-container">
     <h2 class="title">- - {{ selectedCountry?.country }} - -</h2>
   </div>
@@ -23,6 +24,7 @@
     </div>
   </div>
 
+  <!-- Graphique -->
   <div class="chart-container">
     <canvas baseChart
       [datasets]="lineChartData"
@@ -33,6 +35,7 @@
     </canvas>
   </div>
 
+  <!-- Bouton retour a la page home -->
   <div class="back-button-container">
     <button class="back-button" (click)="goBack()">Retour</button>
   </div>
