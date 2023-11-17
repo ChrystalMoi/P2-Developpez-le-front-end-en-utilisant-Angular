@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Country } from 'src/app/pages/models/Country';
 import { Participation } from 'src/app/pages/models/Participation';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, takeUntil } from 'rxjs/operators';
 import { ChartType } from 'chart.js';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-detail',
@@ -13,7 +14,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./detail.component.css']
 })
 
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnDestroy {
+  private ngUnsubscribe = new Subject<void>();
+
   public lineChartOptions = {
     responsive: true,
   };
@@ -26,67 +29,74 @@ export class DetailComponent implements OnInit {
   ];
   public selectedCountry: Country | null = null;
 
-  // Injecte ActivatedRoute et OlympicService dans le constructeur
+  /**
+   * Injecte ActivatedRoute et OlympicService dans le constructeur
+   * @param route
+   * @param olympicService
+   * @param router
+   */
   constructor(private route: ActivatedRoute, private olympicService: OlympicService, private router: Router) {}
 
+  /**
+   * Méthode de rappel qui est invoquée immédiatement après que le détecteur de changement
+   * par défaut a vérifié pour la première fois les propriétés liées aux données de la directive,
+   * et avant que les enfants de la vue ou du contenu n'aient été vérifiés.
+   *
+   * Il n'est invoqué qu'une seule fois lorsque la directive est instanciée.
+   */
   ngOnInit(): void {
-    // Pour écouter les modifications des paramètres de l'URL
     this.route.params.pipe(
-      // Utilise "switchMap" pour passer à un nouvel observable (this.olympicService.getOlympics())
       switchMap(params => {
         const countryId: number = +params['id'];
-
-        // Appelle le service pour obtenir les données olympiques
-        return this.olympicService.getOlympics().pipe(
-          // Utilise map pour traiter les données reçues
-          map((data: Country[]) => {
-            // Trouve le pays correspondant à l'ID
-            const selectedCountry: Country | undefined = data.find((country: Country) => country.id === countryId);
-            return { selectedCountry, countryId };
-          })
-        );
-      })
-
+        return this.olympicService.getOlympics();
+      }),
+      map((data: Country[]) => {
+        const countryId: number = +this.route.snapshot.params['id'];
+        const selectedCountry: Country | undefined = data.find((country: Country) => country.id === countryId);
+        return { selectedCountry, countryId };
+      }),
+      takeUntil(this.ngUnsubscribe)
     ).subscribe(({ selectedCountry, countryId }) => {
-      // Si le pays est trouvé
       if (selectedCountry) {
-        // Maj la propriété selectedCountry
         this.selectedCountry = selectedCountry;
-
-        // Met à jour les labels du graphique avec les années des participations
         this.lineChartLabels = selectedCountry.participations.map((participation: Participation) => participation.year.toString());
-
-        // Maj les données du graphique avec le nombre de médailles par participation
         this.lineChartData[0].data = selectedCountry.participations.map((participation: Participation) => participation.medalsCount);
       }
     });
   }
 
-  //TODO : ajouter le ngDestroy qui se déclanche quand on quitte la page
-  // avec le unsubscribe
+  /**
+   * Méthode de rappel qui effectue un nettoyage personnalisé,
+   * invoquée immédiatement avant la destruction d'une directive,
+   * d'un canal ou d'une instance de service.
+   */
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
-  //Méthode pour le bouton retour à la page home
+  /**
+   * Méthode pour le bouton retour à la page home
+   */
   goBack(): void {
     this.router.navigate(['/home']);
 
   }
 
-  // Méthode pour obtenir le total de médailles (case 2)
+  /**
+   * Méthode pour obtenir le total de médailles
+   * @returns le nombre de médailles total des participations
+   */
   getTotalMedals(): number {
-    if (this.selectedCountry && Array.isArray(this.selectedCountry.participations)) {
-      return this.selectedCountry.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);
-    }
-    return 0;
+    return this.selectedCountry ? this.selectedCountry.participations.reduce((sum, participation) => sum + participation.medalsCount, 0) : 0;
   }
 
- // Méthode pour obtenir le total d'athlètes (case 3)
+  /**
+   * Méthode pour obtenir le total d'athlètes
+   * @returns le nombre d'athlètes total des participations
+   */
   getTotalAthletes(): number {
-    if (this.selectedCountry && Array.isArray(this.selectedCountry.participations)) {
-      // Utilisation de la fonction reduce pour calculer le total d'athlètes
-      const totalAthletes = this.selectedCountry.participations.reduce((sum, participation) => sum + participation.athleteCount, 0);
-      return totalAthletes;
-    }
-    return 0;
+    return this.selectedCountry ? this.selectedCountry.participations.reduce((sum, participation) => sum + participation.athleteCount, 0) : 0;
   }
 
 }
