@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-import { ChartDataSets, ChartType } from 'chart.js';
+import { ChartDataSets, ChartType, ChartPoint } from 'chart.js';
 import { Color } from 'ng2-charts';
 import { Country } from 'src/app/pages/models/Country';
-import { ChartCountry } from 'src/app/pages/models/ChartCountry';
 import { Participation } from 'src/app/pages/models/Participation';
-import { ActivatedRoute, Router } from '@angular/router';
+import { CustomChartPoint } from '../models/CustomChartPoint';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -15,19 +15,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 // Début de la classe du composant
 export class HomeComponent implements OnInit {
+  // Déclaration de la table de correspondance des noms de pays vers les identifiants (statique)
+  private static readonly countryIdMap: { [key: string]: number } = {
+    'Italy': 1,
+    'Spain': 2,
+    'United States': 3,
+    'Germany': 4,
+    'France': 5,
+  };
+
   // Options du graphique
   public chartOptions = {
-    responsive: true, // Le graphique s'adaptera à la taille de l'écran
-
-    onClick: (event: any, chartElements: any[]) => {
-      if (chartElements && chartElements.length > 0) {
-        const clickedIndex = chartElements[0]._index;
-        this.selectedCountryId = clickedIndex;
-
-        // Navigue vers la page de détail en utilisant le Router
-        this.router.navigate(['/detail', this.selectedCountryId]);
-      }
-    }
+    responsive: true,
+    onClick: (event: MouseEvent, chartElements: ChartPoint[]) => this.onChartClick(event, chartElements),
   };
 
   // Libellés (étiquettes) pour l'axe des x du graphique ; Initialisation de chartLabels avec un tableau vide
@@ -65,8 +65,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
     // Appel à la méthode getOlympics du service OlympicService pour récupérer les données
-    this.olympicService.getOlympics().subscribe((data) => {
-
+    this.olympicService.getOlympics().subscribe((data: Country[]) => {
        // Vérification si les données sont un tableau
       if (Array.isArray(data)) {
 
@@ -75,9 +74,7 @@ export class HomeComponent implements OnInit {
 
         // Parcours de la liste des pays
         data.forEach((country) => {
-          console.log('Country data:', country);
-
-          // Vérification si le pays a une liste de participations
+          // Vérificatie si le pays a une liste de participations
           if (Array.isArray(country.participations)) {
             // Calcul du total des médailles pour le pays en utilisant la méthode reduce
             const totalMedals = country.participations.reduce(
@@ -96,15 +93,8 @@ export class HomeComponent implements OnInit {
           const countryId = country.id;
 
           // Ajoute un gestionnaire d'événements pour chaque pays
-          this.chartOptions.onClick = (event, chartElements) => {
-            if (chartElements && chartElements.length > 0) {
-              const clickedIndex = chartElements[0]._index;
-              this.selectedCountryId = clickedIndex;
-
-              // Navigue vers la page de détail en utilisant le Router
-              this.router.navigate(['/detail', this.selectedCountryId]);
-            }
-          };
+          this.chartOptions.onClick = (event: MouseEvent, chartElements: ChartPoint[]) =>
+            this.onChartClick(event, chartElements);
         });
 
         // Mise à jour des données du graphique avec les totaux de médailles par pays
@@ -114,26 +104,20 @@ export class HomeComponent implements OnInit {
   }
 
   // Méthode appelée lorsqu'un segment du graphique est cliqué
-  onChartClick(event: any, chartElements: any[]) {
+  onChartClick(event: MouseEvent, chartElements: CustomChartPoint[]): void {
     if (chartElements && chartElements.length > 0) {
-      const clickedIndex = chartElements[0]._index;
+      const clickedIndex: number | undefined = chartElements[0]._index;
 
-      // Assurez-vous que chartData et chartData[0] ne sont pas undefined
       if (this.chartData && this.chartData[0] && this.chartData[0].data) {
-        // Utilisez le type correct pour selectedCountryData
-        const selectedCountryData = this.chartData[0].data[clickedIndex];
-
-        // Vérifiez si selectedCountryData est défini
-        if (selectedCountryData !== null && selectedCountryData !== undefined) {
-          // Si c'est un tableau de nombres, utilisez directement la valeur
-          const selectedCountryId = (Array.isArray(selectedCountryData)) ? (selectedCountryData[0] as number) + 1 : (selectedCountryData as number) + 1;
-
-          // Navigue vers la page de détail en utilisant le Router
+        if (clickedIndex !== undefined) {
+          const countryName = this.chartLabels[clickedIndex];
+          const selectedCountryId = HomeComponent.countryIdMap[countryName];
           this.router.navigate(['/detail', selectedCountryId]);
         }
       }
     }
   }
+
 
 }
 //Fin class
