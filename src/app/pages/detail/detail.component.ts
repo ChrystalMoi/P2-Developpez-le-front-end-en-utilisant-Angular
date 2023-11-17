@@ -21,18 +21,22 @@ export class DetailComponent implements OnInit {
   public lineChartLabels: string[] = [];
   public lineChartType: ChartType = 'line';
   public lineChartLegend = true;
-  public lineChartData: any[] = [{ data: [] as number[], label: 'Nombre de médailles par participation' }];
-  //public selectedCountry: string = '';
+  public lineChartData: { data: number[]; label: string }[] = [
+    { data: [], label: 'Nombre de médailles par participation' }
+  ];
   public selectedCountry: Country | null = null;
 
   // Injecte ActivatedRoute et OlympicService dans le constructeur
   constructor(private route: ActivatedRoute, private olympicService: OlympicService, private router: Router) {}
 
   ngOnInit(): void {
+    // Pour écouter les modifications des paramètres de l'URL
     this.route.params.pipe(
+      // "switchMap pour passer à un nouvel observable (this.olympicService.getOlympics())
       switchMap(params => {
-        const countryId: number = +params['id']+1;
+        const countryId: number = +params['id'];
         return this.olympicService.getOlympics().pipe(
+          // map pour traiter les données reçues
           map((data: Country[]) => {
             const selectedCountry: Country | undefined = data.find((country: Country) => country.id === countryId);
             return { selectedCountry, countryId };
@@ -49,7 +53,26 @@ export class DetailComponent implements OnInit {
   }
 
   goBack(): void {
-    // Utilisez le service Router pour naviguer vers la page d'accueil
+    // Utilisation du service Router pour naviguer vers la page d'accueil
     this.router.navigate(['/home']);
   }
+
+  // Méthode pour obtenir le total de médailles
+  getTotalMedals(): number {
+    if (this.selectedCountry && Array.isArray(this.selectedCountry.participations)) {
+      return this.selectedCountry.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);
+    }
+    return 0;
+  }
+
+ // Méthode pour obtenir le total d'athlètes
+  getTotalAthletes(): number {
+    if (this.selectedCountry && Array.isArray(this.selectedCountry.participations)) {
+      // Utilisation de la fonction reduce pour calculer le total d'athlètes
+      const totalAthletes = this.selectedCountry.participations.reduce((sum, participation) => sum + participation.athleteCount, 0);
+      return totalAthletes;
+    }
+    return 0;
+  }
+
 }
