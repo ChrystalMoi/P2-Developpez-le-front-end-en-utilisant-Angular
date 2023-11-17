@@ -37,7 +37,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: calc(33.33% - 20px); /* Utilisation de calc pour calculer la largeur sur trois colonnes avec espace entre */
   box-sizing: border-box;
 }
 
