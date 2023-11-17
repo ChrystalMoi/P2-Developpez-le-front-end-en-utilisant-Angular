@@ -1,6 +1,26 @@
 <div class="page-container">
   <div class="title-container">
-    <h2 class="title">{{ selectedCountry?.country }}</h2>
+    <h2 class="title">- - {{ selectedCountry?.country }} - -</h2>
+  </div>
+
+  <div class="info-container">
+    <!-- Case 1: Nombre de participations aux JO -->
+    <div class="info-box">
+      <h5>Number of entries</h5>
+      <p>{{ selectedCountry?.participations?.length || 0 }}</p>
+    </div>
+
+    <!-- Case 2: Nombre total de médailles obtenues -->
+    <div class="info-box">
+      <h5>Total number medals</h5>
+      <p>{{ getTotalMedals() }}</p>
+    </div>
+
+    <!-- Case 3: Nombre total d'athlètes présentés aux JO -->
+    <div class="info-box">
+      <h5>Total number of athletes</h5>
+      <p>{{ getTotalAthletes() }}</p>
+    </div>
   </div>
 
   <div class="chart-container">
