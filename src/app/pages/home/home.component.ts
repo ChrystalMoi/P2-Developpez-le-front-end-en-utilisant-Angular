@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css'],
 })
 
-// Début de la classe du composant
 export class HomeComponent implements OnInit {
   /**
    * Déclaration de la table de correspondance des noms de pays vers les identifiants (statique)
@@ -62,7 +61,7 @@ export class HomeComponent implements OnInit {
       backgroundColor: [
         '#9780A1',  // France
         '#956065',  // Italy
-        '#B8CBE7',  // Spain
+        '#BACBE7',  // Spain
         '#89A1DB',  // United States
         '#793D52',  // Germany
       ],
@@ -146,4 +145,3 @@ export class HomeComponent implements OnInit {
 
 
 }
-//Fin class
