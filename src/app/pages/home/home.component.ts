@@ -71,7 +71,9 @@ export class HomeComponent implements OnInit {
   ];
 
   /**
-   * Méthode qui donne le nombre d'années et le nombre de pays
+   * Ensemble 'set' qui donne le nombre d'années et le nombre de pays
+   * ensemble (Set) ne peut contenir que des valeurs uniques,
+   * ce qui est idéal pour obtenir des valeurs distinctes
    */
   public numberOfYears: number | null = null;
   public numberOfCountries: number | null = null;
