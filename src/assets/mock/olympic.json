@@ -14,7 +14,7 @@
         "id": 2,
         "year": 2016,
         "city": "Rio de Janeiro",
-        "medalsCount": 28,
+        "medalsCount": 29,
         "athleteCount": 375
       },
       {
@@ -48,7 +48,7 @@
         "id": 3,
         "year": 2020,
         "city": "Tokyo",
-        "medalsCount": 17,
+        "medalsCount": 19,
         "athleteCount": 321
       }
     ]
@@ -88,7 +88,7 @@
         "id": 1,
         "year": 2012,
         "city": "Londres",
-        "medalsCount": 44,
+        "medalsCount": 43,
         "athleteCount": 425
       },
       {
