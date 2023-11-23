@@ -45,7 +45,9 @@ export class HomeComponent implements OnInit {
    */
   public chartType: ChartType = 'pie';
 
-  // Afficher la légende du graphique
+  /**
+   * Afficher la légende du graphique
+   */
   public chartLegend = true;
 
   /**
@@ -69,6 +71,14 @@ export class HomeComponent implements OnInit {
   ];
 
   /**
+   * Ensemble 'set' qui donne le nombre d'années et le nombre de pays
+   * ensemble (Set) ne peut contenir que des valeurs uniques,
+   * ce qui est idéal pour obtenir des valeurs distinctes
+   */
+  public numberOfYears: number | null = null;
+  public numberOfCountries: number | null = null;
+
+  /**
    * Injection du service OlympicService dans le constructeur
    * @param olympicService
    * @param router
@@ -84,18 +94,33 @@ export class HomeComponent implements OnInit {
    * Méthode ngOnInit qui est appelée lors de l'initialisation du composant
    */
   ngOnInit(): void {
-
     // Appel à la méthode getOlympics du service OlympicService pour récupérer les données
     this.olympicService.getOlympics().subscribe((data: Country[]) => {
-       // Vérification si les données sont un tableau
+      // Vérification si les données sont un tableau
       if (Array.isArray(data)) {
+
+        // Calcul du nombre total d'années différentes
+        const uniqueYears = new Set<number>();
+        // Calcul du nombre de pays différents
+        const uniqueCountries = new Set<string>();
 
         // Initialisation d'un tableau pour stocker le total des médailles de chaque pays
         const totalMedalsData: number[] = [];
 
         // Parcours de la liste des pays
         data.forEach((country) => {
-          // Vérificatie si le pays a une liste de participations
+
+          // Ajout des années aux années uniques
+          if (Array.isArray(country.participations)) {
+            country.participations.forEach((participation) => {
+              uniqueYears.add(participation.year);
+            });
+          }
+
+          // Ajout des noms de pays aux pays uniques
+          uniqueCountries.add(country.country);
+
+          // Vérification si le pays a une liste de participations
           if (Array.isArray(country.participations)) {
             // Calcul du total des médailles pour le pays en utilisant la méthode reduce
             const totalMedals = country.participations.reduce(
@@ -120,6 +145,12 @@ export class HomeComponent implements OnInit {
 
         // Mise à jour des données du graphique avec les totaux de médailles par pays
         this.chartData[0].data = totalMedalsData;
+
+        // Attribution du nombre total d'années différentes
+        this.numberOfYears = uniqueYears.size;
+
+        // Attribution du nombre de pays différents
+        this.numberOfCountries = uniqueCountries.size;
       }
     });
   }
@@ -130,18 +161,25 @@ export class HomeComponent implements OnInit {
    * @param chartElements
    */
   onChartClick(event: MouseEvent, chartElements: CustomChartPoint[]): void {
+    // Vérifie si des éléments de graph ont été cliqués et s'il y en a au moins un
     if (chartElements && chartElements.length > 0) {
+      // Récupère l'index du segment cliqué dans le graph
       const clickedIndex: number | undefined = chartElements[0]._index;
 
+      // Vérifie si les données du graph et les données du segment existent
       if (this.chartData && this.chartData[0] && this.chartData[0].data) {
+        // Vérifie si un index a été défini
         if (clickedIndex !== undefined) {
+          // Récupère le countryName correspondant à l'index cliqué dans le graph
           const countryName = this.chartLabels[clickedIndex];
+
+          // Récupère l'ID du pays a partir de la table de correspondance statique
           const selectedCountryId = HomeComponent.countryIdMap[countryName];
+
+          // Navigue vers la page de détail du pays sélectionné
           this.router.navigate(['/detail', selectedCountryId]);
         }
       }
     }
   }
-
-
 }

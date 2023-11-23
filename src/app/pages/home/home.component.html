@@ -2,6 +2,20 @@
   <!-- Titre fixe-->
   <app-title [pageTitle]="' Medals per Country'"></app-title>
 
+  <div class="info-container">
+    <!-- Case 1: Nombre de JOs -->
+    <div class="info-box">
+      <h5>Number of JO</h5>
+      <p>{{ numberOfYears || 0 }}</p>
+    </div>
+
+    <!-- Case 2: Nombre pays -->
+    <div class="info-box">
+      <h5>Number of country</h5>
+      <p>{{ numberOfCountries || 0 }}</p>
+    </div>
+  </div>
+
   <!-- Graphique -->
   <div class="chart-container">
     <canvas baseChart
