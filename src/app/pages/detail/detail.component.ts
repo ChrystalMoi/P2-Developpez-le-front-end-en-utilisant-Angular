@@ -7,6 +7,7 @@ import { switchMap, map, takeUntil } from 'rxjs/operators';
 import { ChartType } from 'chart.js';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { MedalService } from 'src/app/services/medal.service';
 
 @Component({
   selector: 'app-detail',
@@ -35,7 +36,12 @@ export class DetailComponent implements OnInit, OnDestroy {
    * @param olympicService
    * @param router
    */
-  constructor(private route: ActivatedRoute, private olympicService: OlympicService, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private olympicService: OlympicService,
+    private router: Router,
+    private medalService: MedalService
+  ) {}
 
   /**
    * Méthode de rappel qui est invoquée immédiatement après que le détecteur de changement
@@ -56,11 +62,16 @@ export class DetailComponent implements OnInit, OnDestroy {
         return { selectedCountry, countryId };
       }),
       takeUntil(this.ngUnsubscribe)
+
     ).subscribe(({ selectedCountry, countryId }) => {
       if (selectedCountry) {
         this.selectedCountry = selectedCountry;
         this.lineChartLabels = selectedCountry.participations.map((participation: Participation) => participation.year.toString());
         this.lineChartData[0].data = selectedCountry.participations.map((participation: Participation) => participation.medalsCount);
+
+        // Mise à jour du service des médailles avec le nombre total de médailles par participation
+        const totalMedalsByParticipation = selectedCountry.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);
+        this.medalService.updateMedalCount(totalMedalsByParticipation);
       }
     });
   }
