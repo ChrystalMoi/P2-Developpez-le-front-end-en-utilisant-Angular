@@ -6,6 +6,7 @@ import { Country } from 'src/app/pages/models/Country';
 import { Participation } from 'src/app/pages/models/Participation';
 import { CustomChartPoint } from '../models/CustomChartPoint';
 import { Router } from '@angular/router';
+import { MedalService } from 'src/app/services/medal.service';
 
 @Component({
   selector: 'app-home',
@@ -70,11 +71,6 @@ export class HomeComponent implements OnInit {
     },
   ];
 
-  /**
-   * Ensemble 'set' qui donne le nombre d'années et le nombre de pays
-   * ensemble (Set) ne peut contenir que des valeurs uniques,
-   * ce qui est idéal pour obtenir des valeurs distinctes
-   */
   public numberOfYears: number | null = null;
   public numberOfCountries: number | null = null;
 
@@ -83,7 +79,11 @@ export class HomeComponent implements OnInit {
    * @param olympicService
    * @param router
    */
-  constructor(private olympicService: OlympicService, private router: Router) {}
+  constructor(
+    private olympicService: OlympicService,
+    private router: Router,
+    private medalService: MedalService
+  ) {}
 
   /**
    * Ajoute une propriété pour stocker l'ID du pays sélectionné
