@@ -9,11 +9,14 @@ Avant de commencer, assurez-vous d'avoir installé les dépendances (node_module
 ## Serveur de développement
 
 Pour lancer le serveur de développement, utilisez la commande suivante : `ng serve`
+
 Accédez à `http://localhost:4200/` dans votre navigateur. L'application se rechargera automatiquement à chaque modification des fichiers sources.
 
 ## Structure du projet
 
-L'architecture du projet suit une organisation logique pour faciliter le développement. Voici un aperçu rapide :
+L'architecture du projet suit une organisation logique pour faciliter le développement.
+
+Voici un aperçu rapide :
 
 - components : Contient tous les composants réutilisables (pour le titre par exemple).
 - pages : Contient les composants utilisés pour la navigation (detail et home).
