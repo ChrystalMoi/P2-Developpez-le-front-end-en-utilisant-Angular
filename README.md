@@ -15,9 +15,9 @@ Accédez à `http://localhost:4200/` dans votre navigateur. L'application se rec
 
 L'architecture du projet suit une organisation logique pour faciliter le développement. Voici un aperçu rapide :
 
-- components: Contient tous les composants réutilisables (pour le titre par exemple).
-- pages: Contient les composants utilisés pour la navigation (detail et home).
-- core: Contient la logique métier, avec les dossiers services et models.
+- components : Contient tous les composants réutilisables (pour le titre par exemple).
+- pages : Contient les composants utilisés pour la navigation (detail et home).
+- core : Contient la logique métier, avec les dossiers services et models.
 
 Les interfaces TypeScript sont situées dans le dossier models.
 
