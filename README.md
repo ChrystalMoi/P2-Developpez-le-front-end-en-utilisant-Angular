@@ -24,4 +24,5 @@ Les interfaces TypeScript sont situées dans le dossier models.
 ## Construction du Projet
 
 Pour construire le projet, utilisez la commande suivante : `ng build`
+
 Les artefacts de construction seront générés dans le répertoire dist/.
