@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { ChartDataSets, ChartType, ChartPoint } from 'chart.js';
 import { Color } from 'ng2-charts';
-import { Country } from 'src/app/pages/models/Country';
-import { Participation } from 'src/app/pages/models/Participation';
-import { CustomChartPoint } from '../models/CustomChartPoint';
+import { Country } from 'src/app/core/models/Country';
+import { Participation } from 'src/app/core/models/Participation';
+import { CustomChartPoint } from '../../core/models/CustomChartPoint';
 import { Router } from '@angular/router';
 import { MedalService } from 'src/app/services/medal.service';
 
@@ -161,7 +161,7 @@ export class HomeComponent implements OnInit {
    * @param chartElements
    */
   onChartClick(event: MouseEvent, chartElements: CustomChartPoint[]): void {
-    // Vérifie si des éléments de graph ont été cliqués et s'il y en a au moins un
+    // Vérifie si des éléments du graph ont été cliqués et s'il y en a au moins un
     if (chartElements && chartElements.length > 0) {
       // Récupère l'index du segment cliqué dans le graph
       const clickedIndex: number | undefined = chartElements[0]._index;

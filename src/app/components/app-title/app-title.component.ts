@@ -6,5 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./app-title.component.css']
 })
 export class AppTitleComponent {
+  //Input : permet de passer une donnée parent vers un composant enfant
+  //Output : permet de passer une donnée de l'enfant vers le parent
   @Input() pageTitle: string | undefined;
 }

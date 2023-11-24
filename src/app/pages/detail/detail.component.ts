@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-import { Country } from 'src/app/pages/models/Country';
-import { Participation } from 'src/app/pages/models/Participation';
+import { Country } from 'src/app/core/models/Country';
+import { Participation } from 'src/app/core/models/Participation';
 import { switchMap, map, takeUntil } from 'rxjs/operators';
 import { ChartType } from 'chart.js';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { MedalService } from 'src/app/services/medal.service';
 
 @Component({
@@ -16,7 +16,8 @@ import { MedalService } from 'src/app/services/medal.service';
 })
 
 export class DetailComponent implements OnInit, OnDestroy {
-  private ngUnsubscribe = new Subject<void>();
+  //private ngUnsubscribe = new Subject<void>();
+  private souscription! : Subscription;
 
   public lineChartOptions = {
     responsive: true,
@@ -51,19 +52,15 @@ export class DetailComponent implements OnInit, OnDestroy {
    * Il n'est invoqué qu'une seule fois lorsque la directive est instanciée.
    */
   ngOnInit(): void {
-    this.route.params.pipe(
-      switchMap(params => {
-        const countryId: number = +params['id'];
-        return this.olympicService.getOlympics();
-      }),
+    this.souscription = this.olympicService.getOlympics().pipe(
+      //transforme en observable d'un pays
       map((data: Country[]) => {
         const countryId: number = +this.route.snapshot.params['id'];
         const selectedCountry: Country | undefined = data.find((country: Country) => country.id === countryId);
-        return { selectedCountry, countryId };
-      }),
-      takeUntil(this.ngUnsubscribe)
+        return { selectedCountry };
+      })
 
-    ).subscribe(({ selectedCountry, countryId }) => {
+    ).subscribe(({ selectedCountry }) => {
       if (selectedCountry) {
         this.selectedCountry = selectedCountry;
         this.lineChartLabels = selectedCountry.participations.map((participation: Participation) => participation.year.toString());
@@ -82,8 +79,7 @@ export class DetailComponent implements OnInit, OnDestroy {
    * d'un canal ou d'une instance de service.
    */
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.souscription.unsubscribe();
   }
 
   /**
@@ -91,7 +87,6 @@ export class DetailComponent implements OnInit, OnDestroy {
    */
   goBack(): void {
     this.router.navigate(['/home']);
-
   }
 
   /**
