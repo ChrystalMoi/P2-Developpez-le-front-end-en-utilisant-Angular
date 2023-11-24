@@ -2,24 +2,26 @@
 
 Ce projet a été généré avec [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
 
-Installer vos node_modules avant de commencer (`npm install`).
+## Installation des dépendances
+
+Avant de commencer, assurez-vous d'avoir installé les dépendances (node_modules) en exécutant la commande suivante : `npm install`
 
 ## Serveur de développement
 
-Exécutez `ng serve` pour lancer le serveur de développement. Accédez à `http://localhost:4200/`.  L'application se rechargera automatiquement en cas de modification de l'un des fichiers source.
+Pour lancer le serveur de développement, utilisez la commande suivante : `ng serve`
+Accédez à `http://localhost:4200/` dans votre navigateur. L'application se rechargera automatiquement à chaque modification des fichiers sources.
 
-## Build
+## Structure du projet
 
-Exécutez `ng build` pour construire le projet. Les artefacts de construction seront stockés dans le répertoire `dist/`.
+L'architecture du projet suit une organisation logique pour faciliter le développement. Voici un aperçu rapide :
 
-## Où Commencer
-Une architecture a déjà été définie pour le projet. Il s'agit simplement d'une suggestion. L'architecture prédéfinie comprend (en plus de l'architecture Angular par défaut) les éléments suivants :
+- components: Contient tous les composants réutilisables (pour le titre par exemple).
+- pages: Contient les composants utilisés pour la navigation (detail et home).
+- core: Contient la logique métier, avec les dossiers services et models.
 
-Dossier `components` : contient tous les composants réutilisables.
+Les interfaces TypeScript sont situées dans le dossier models.
 
-Dossier `page` : contient les composants utilisés pour la navigation.
+## Construction du Projet
 
-Dossier `core` : contient la logique métier (les dossiers `services` et `models`).
-
-Une fois que vous les maîtrisez, vous devriez continuer en créant les interfaces TypeScript à l'intérieur du dossier `models`. 
-Comme vous pouvez le constater, j'ai déjà créé deux fichiers correspondant aux données incluses dans `olympic.json`. Avec vos interfaces, améliorez le code en remplaçant chaque `any` par l'interface correspondante.
+Pour construire le projet, utilisez la commande suivante : `ng build`
+Les artefacts de construction seront générés dans le répertoire dist/.
