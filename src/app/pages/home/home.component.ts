@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-import { Chart, ChartDataset, ChartType, ChartEvent, LegendItem } from 'chart.js';
+import { Chart, ChartDataset, ChartType, ChartEvent, ActiveElement } from 'chart.js';
 import { Country } from 'src/app/core/models/Country';
 import { Participation } from 'src/app/core/models/Participation';
 import { CustomColor } from 'src/app/core/models/CustomColor';
@@ -23,14 +23,6 @@ export class HomeComponent implements OnInit {
     'United States': 3,
     'Germany': 4,
     'France': 5,
-  };
-
-  /**
-   * Options du graphique
-   */
-  public chartOptions = {
-    responsive: true,
-    onClick: (event: ChartEvent, chartElement: LegendItem) => this.onChartClick(event, chartElement),
   };
 
   /**
@@ -85,7 +77,9 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private medalService: MedalService,
     //private chart: Chart
-  ) {}
+  ) {
+    console.log("Router service:", router);
+  }
 
   /**
    * Ajoute une propriété pour stocker l'ID du pays sélectionné
@@ -107,7 +101,6 @@ export class HomeComponent implements OnInit {
         const uniqueYears = new Set<number>();
         // Calcul du nombre de pays différents
         const uniqueCountries = new Set<string>();
-
         // Initialisation d'un tableau pour stocker le total des médailles de chaque pays
         const totalMedalsData: number[] = [];
 
@@ -143,8 +136,8 @@ export class HomeComponent implements OnInit {
           const countryId = country.id;
 
           // Ajoute un gestionnaire d'événements pour chaque pays
-          this.chartOptions.onClick = (event: ChartEvent, chartElement: LegendItem) =>
-            this.onChartClick(event, chartElement);
+          /*this.chartOptions.onClick = (event: ChartEvent, chartElement: LegendItem) =>
+            this.onChartClick(event, chartElement);*/
         });
 
         // Mise à jour des données du graphique avec les totaux de médailles par pays
@@ -155,29 +148,29 @@ export class HomeComponent implements OnInit {
 
         // Attribution du nombre de pays différents
         this.numberOfCountries = uniqueCountries.size;
+
+        // Initialisation du graphique après que les données soit disponibles
+        this.initChart();
+
+        // Mise à jour du graphique après avoir initialisé les données
+        this.chart?.update();
       }
     });
 
-    //déclaration du graphique
-    this.initChart();
   }
 
   private initChart(): void{
     const canvasElement = document.getElementById('chartHome') as HTMLCanvasElement;
-  this.chart = new Chart(canvasElement, {
-    type: this.chartType,
-    data: {
-      labels: this.chartLabels,
-      datasets: this.chartData,
-    },
-    options: {
-      plugins: {
-        legend: {
-          onClick: (event, chartElement) => this.onChartClick(event, chartElement),
-        },
+    this.chart = new Chart(canvasElement, {
+      type: this.chartType,
+      data: {
+        labels: this.chartLabels,
+        datasets: this.chartData,
       },
-    },
-  });
+      options: {
+        onClick: (event, chartElement) => this.onChartClick(event, chartElement),
+      },
+    });
   }
 
   /**
@@ -185,11 +178,12 @@ export class HomeComponent implements OnInit {
    * @param event
    * @param chartElements
    */
-  onChartClick(event: ChartEvent, chartElement: LegendItem): void {
+  onChartClick(event: ChartEvent, chartElement: ActiveElement[]): void {
     // Vérifie si l'élément du graph a été cliqué
+    console.log("dans le click")
     if (chartElement) {
       // Récupère l'index du segment cliqué dans le graph
-      const clickedIndex: number | undefined = chartElement.index;
+      const clickedIndex: number | undefined = chartElement[0].index;
 
       // Vérifie si les données du graph et les données du segment existent
       if (this.chartData && this.chartData[0] && this.chartData[0].data) {
@@ -201,8 +195,14 @@ export class HomeComponent implements OnInit {
           // Récupère l'ID du pays a partir de la table de correspondance statique
           const selectedCountryId = HomeComponent.countryIdMap[countryName];
 
+          console.log("Country Name:", countryName);
+          console.log("Selected Country ID:", selectedCountryId);
+
           // Navigue vers la page de détail du pays sélectionné
           this.router.navigate(['/detail', selectedCountryId]);
+          //this.router.navigateByUrl(`/detail/${selectedCountryId}`);
+
+          console.log("detail id");
         }
       }
     }

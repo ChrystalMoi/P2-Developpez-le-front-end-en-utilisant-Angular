@@ -42,8 +42,10 @@ export class DetailComponent implements OnInit, OnDestroy {
     private olympicService: OlympicService,
     private router: Router,
     private medalService: MedalService,
-    private chart: Chart
+    //private chart: Chart
   ) {}
+
+  private chart: Chart | undefined;
 
   /**
    * Méthode de rappel qui est invoquée immédiatement après que le détecteur de changement
@@ -53,16 +55,6 @@ export class DetailComponent implements OnInit, OnDestroy {
    * Il n'est invoqué qu'une seule fois lorsque la directive est instanciée.
    */
   ngOnInit(): void {
-    const canvasElement = document.getElementById('chartDetail') as HTMLCanvasElement;
-    this.chart = new Chart(canvasElement, {
-      type : this.lineChartType,
-      data: {
-        labels: this.lineChartLabels,
-        datasets: this.lineChartData,
-      },
-      options: this.lineChartOptions
-    })
-
     this.souscription = this.olympicService.getOlympics().pipe(
       //transforme en observable d'un pays
       map((data: Country[]) => {
@@ -82,6 +74,24 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.medalService.updateMedalCount(totalMedalsByParticipation);
       }
     });
+
+    // Initialisation du graphique après que les données soit disponibles
+    this.initChart();
+
+    // Mise à jour du graphique après avoir initialisé les données
+    this.chart?.update();
+  }
+
+  private initChart(): void{
+    const canvasElement = document.getElementById('chartDetail') as HTMLCanvasElement;
+    this.chart = new Chart(canvasElement, {
+      type : this.lineChartType,
+      data: {
+        labels: this.lineChartLabels,
+        datasets: this.lineChartData,
+      },
+      options: this.lineChartOptions
+    })
   }
 
   /**
@@ -97,7 +107,7 @@ export class DetailComponent implements OnInit, OnDestroy {
    * Méthode pour le bouton retour à la page home
    */
   goBack(): void {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 
   /**

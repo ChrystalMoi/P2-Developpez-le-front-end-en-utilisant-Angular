@@ -10,7 +10,7 @@ import { DetailComponent } from './pages/detail/detail.component';
 import { AppTitleComponent } from '../app/components/app-title/app-title.component'
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, NotFoundComponent, DetailComponent, AppTitleComponent],
+  declarations: [AppComponent, HomeComponent, DetailComponent, NotFoundComponent, AppTitleComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, NgChartsModule],
   providers: [],
   bootstrap: [AppComponent],
