@@ -4,10 +4,10 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Country } from 'src/app/core/models/Country';
 import { Participation } from 'src/app/core/models/Participation';
 import { switchMap, map, takeUntil } from 'rxjs/operators';
-import { ChartType } from 'chart.js';
+import { Chart, ChartType } from 'chart.js';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
-import { MedalService } from 'src/app/services/medal.service';
+import { MedalService } from 'src/app/core/services/medal.service';
 
 @Component({
   selector: 'app-detail',
@@ -25,7 +25,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   public lineChartLabels: string[] = [];
   public lineChartType: ChartType = 'line';
-  public lineChartLegend = true;
+  //public lineChartLegend = true;
   public lineChartData: { data: number[]; label: string }[] = [
     { data: [], label: 'Nombre de médailles par participation' }
   ];
@@ -41,7 +41,8 @@ export class DetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private olympicService: OlympicService,
     private router: Router,
-    private medalService: MedalService
+    private medalService: MedalService,
+    private chart: Chart
   ) {}
 
   /**
@@ -52,6 +53,16 @@ export class DetailComponent implements OnInit, OnDestroy {
    * Il n'est invoqué qu'une seule fois lorsque la directive est instanciée.
    */
   ngOnInit(): void {
+    const canvasElement = document.getElementById('chartDetail') as HTMLCanvasElement;
+    this.chart = new Chart(canvasElement, {
+      type : this.lineChartType,
+      data: {
+        labels: this.lineChartLabels,
+        datasets: this.lineChartData,
+      },
+      options: this.lineChartOptions
+    })
+
     this.souscription = this.olympicService.getOlympics().pipe(
       //transforme en observable d'un pays
       map((data: Country[]) => {

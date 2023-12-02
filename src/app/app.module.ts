@@ -5,13 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { DetailComponent } from './pages/detail/detail.component';
-import {AppTitleComponent} from '../app/components/app-title/app-title.component'
+import { AppTitleComponent } from '../app/components/app-title/app-title.component'
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NotFoundComponent, DetailComponent, AppTitleComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, ChartsModule],
+  imports: [NgChartsModule, BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })
