@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-import { ChartDataSets, ChartType, ChartPoint } from 'chart.js';
-import { Color } from 'ng2-charts';
+import { Chart, ChartDataset, ChartType, ChartEvent, ActiveElement } from 'chart.js';
 import { Country } from 'src/app/core/models/Country';
 import { Participation } from 'src/app/core/models/Participation';
-import { CustomChartPoint } from '../../core/models/CustomChartPoint';
+import { CustomColor } from 'src/app/core/models/CustomColor';
 import { Router } from '@angular/router';
-import { MedalService } from 'src/app/services/medal.service';
+import { MedalService } from 'src/app/core/services/medal.service';
 
 @Component({
   selector: 'app-home',
@@ -24,14 +23,6 @@ export class HomeComponent implements OnInit {
     'United States': 3,
     'Germany': 4,
     'France': 5,
-  };
-
-  /**
-   * Options du graphique
-   */
-  public chartOptions = {
-    responsive: true,
-    onClick: (event: MouseEvent, chartElements: ChartPoint[]) => this.onChartClick(event, chartElements),
   };
 
   /**
@@ -54,12 +45,12 @@ export class HomeComponent implements OnInit {
   /**
    * Les données du graphique (initialisées avec un tableau vide)
    */
-  public chartData: ChartDataSets[] = [{ data: [] as number[], label: 'Nombre de médailles' }];
+  public chartData: ChartDataset[] = [{ data: [] as number[], label: 'Nombre de médailles' }];
 
   /**
    * Couleurs spécifiées pour chaque segment du graphique
    */
-  public chartColors: Color[] = [
+  public chartColors: CustomColor[] = [
     {
       backgroundColor: [
         '#9780A1',  // France
@@ -78,17 +69,24 @@ export class HomeComponent implements OnInit {
    * Injection du service OlympicService dans le constructeur
    * @param olympicService
    * @param router
+   * @param medalService
+   * @param chart
    */
   constructor(
     private olympicService: OlympicService,
     private router: Router,
-    private medalService: MedalService
-  ) {}
+    private medalService: MedalService,
+    //private chart: Chart
+  ) {
+    console.log("Router service:", router);
+  }
 
   /**
    * Ajoute une propriété pour stocker l'ID du pays sélectionné
    */
   selectedCountryId: number | null = null;
+
+  private chart: Chart | undefined;
 
   /**
    * Méthode ngOnInit qui est appelée lors de l'initialisation du composant
@@ -103,7 +101,6 @@ export class HomeComponent implements OnInit {
         const uniqueYears = new Set<number>();
         // Calcul du nombre de pays différents
         const uniqueCountries = new Set<string>();
-
         // Initialisation d'un tableau pour stocker le total des médailles de chaque pays
         const totalMedalsData: number[] = [];
 
@@ -139,8 +136,8 @@ export class HomeComponent implements OnInit {
           const countryId = country.id;
 
           // Ajoute un gestionnaire d'événements pour chaque pays
-          this.chartOptions.onClick = (event: MouseEvent, chartElements: ChartPoint[]) =>
-            this.onChartClick(event, chartElements);
+          /*this.chartOptions.onClick = (event: ChartEvent, chartElement: LegendItem) =>
+            this.onChartClick(event, chartElement);*/
         });
 
         // Mise à jour des données du graphique avec les totaux de médailles par pays
@@ -151,7 +148,28 @@ export class HomeComponent implements OnInit {
 
         // Attribution du nombre de pays différents
         this.numberOfCountries = uniqueCountries.size;
+
+        // Initialisation du graphique après que les données soit disponibles
+        this.initChart();
+
+        // Mise à jour du graphique après avoir initialisé les données
+        this.chart?.update();
       }
+    });
+
+  }
+
+  private initChart(): void{
+    const canvasElement = document.getElementById('chartHome') as HTMLCanvasElement;
+    this.chart = new Chart(canvasElement, {
+      type: this.chartType,
+      data: {
+        labels: this.chartLabels,
+        datasets: this.chartData,
+      },
+      options: {
+        onClick: (event, chartElement) => this.onChartClick(event, chartElement),
+      },
     });
   }
 
@@ -160,11 +178,12 @@ export class HomeComponent implements OnInit {
    * @param event
    * @param chartElements
    */
-  onChartClick(event: MouseEvent, chartElements: CustomChartPoint[]): void {
-    // Vérifie si des éléments du graph ont été cliqués et s'il y en a au moins un
-    if (chartElements && chartElements.length > 0) {
+  onChartClick(event: ChartEvent, chartElement: ActiveElement[]): void {
+    // Vérifie si l'élément du graph a été cliqué
+    console.log("dans le click")
+    if (chartElement) {
       // Récupère l'index du segment cliqué dans le graph
-      const clickedIndex: number | undefined = chartElements[0]._index;
+      const clickedIndex: number | undefined = chartElement[0].index;
 
       // Vérifie si les données du graph et les données du segment existent
       if (this.chartData && this.chartData[0] && this.chartData[0].data) {
@@ -176,8 +195,14 @@ export class HomeComponent implements OnInit {
           // Récupère l'ID du pays a partir de la table de correspondance statique
           const selectedCountryId = HomeComponent.countryIdMap[countryName];
 
+          console.log("Country Name:", countryName);
+          console.log("Selected Country ID:", selectedCountryId);
+
           // Navigue vers la page de détail du pays sélectionné
           this.router.navigate(['/detail', selectedCountryId]);
+          //this.router.navigateByUrl(`/detail/${selectedCountryId}`);
+
+          console.log("detail id");
         }
       }
     }
