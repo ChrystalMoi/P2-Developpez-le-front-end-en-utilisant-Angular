@@ -6,7 +6,7 @@ Ce projet a été généré avec [Angular CLI](https://github.com/angular/angula
 
 Avant de commencer, assurez-vous d'avoir installé les dépendances (node_modules) en exécutant la commande suivante : `npm install`
 
-## Serveur de développement
+## Lancement de l'application
 
 Pour lancer le serveur de développement, utilisez la commande suivante : `ng serve`
 
