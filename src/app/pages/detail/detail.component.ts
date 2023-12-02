@@ -88,7 +88,20 @@ export class DetailComponent implements OnInit, OnDestroy {
       type : this.lineChartType,
       data: {
         labels: this.lineChartLabels,
-        datasets: this.lineChartData,
+        datasets: [{
+          data: this.lineChartData[0].data,
+          label: this.lineChartData[0].label,
+          borderColor: '#00838F', // Couleur de la ligne
+          backgroundColor: '#00838F', // Couleur de fond de la ligne
+          borderWidth: 2, // Largeur de la bordure
+          pointRadius: 6, // Taille des points
+          pointBackgroundColor: '#00838F', // Couleur des points
+          pointHoverRadius: 8, // Taille des points au survol
+          pointHoverBackgroundColor: '#ff0000', // Couleur des points au survol
+          borderCapStyle: 'round', // Style de la bordure à l'extrémité de la ligne (arrondi)
+          borderJoinStyle: 'round', // Style de la bordure aux jonctions des segments (arrondi)
+          tension: 0.3, // Tension de la courbe
+        }],
       },
       options: this.lineChartOptions
     })
@@ -104,7 +117,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Méthode pour le bouton retour à la page home
+   * Méthode pour le bouton retour à la page home (accueil)
    */
   goBack(): void {
     this.router.navigate(['/']);
