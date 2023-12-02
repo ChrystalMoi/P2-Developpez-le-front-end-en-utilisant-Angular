@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-import { ChartDataset, ChartType, Chart, ChartEvent, LegendItem } from 'chart.js';
+import { Chart, ChartDataset, ChartType, ChartEvent, LegendItem } from 'chart.js';
 import { Country } from 'src/app/core/models/Country';
 import { Participation } from 'src/app/core/models/Participation';
 import { CustomColor } from 'src/app/core/models/CustomColor';
@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit {
     private olympicService: OlympicService,
     private router: Router,
     private medalService: MedalService,
-    private chart: Chart
+    //private chart: Chart
   ) {}
 
   /**
@@ -92,26 +92,12 @@ export class HomeComponent implements OnInit {
    */
   selectedCountryId: number | null = null;
 
+  private chart: Chart | undefined;
+
   /**
    * Méthode ngOnInit qui est appelée lors de l'initialisation du composant
    */
   ngOnInit(): void {
-    const canvasElement = document.getElementById('chartHome') as HTMLCanvasElement;
-    this.chart = new Chart(canvasElement, {
-      type : this.chartType,
-      data: {
-        labels: this.chartLabels,
-        datasets: this.chartData,
-      },
-      options: {
-        plugins: {
-          legend: {
-            onClick: (event, chartElement) => this.onChartClick(event, chartElement)
-          }
-        }
-      }
-    })
-
     // Appel à la méthode getOlympics du service OlympicService pour récupérer les données
     this.olympicService.getOlympics().subscribe((data: Country[]) => {
       // Vérification si les données sont un tableau
@@ -171,6 +157,27 @@ export class HomeComponent implements OnInit {
         this.numberOfCountries = uniqueCountries.size;
       }
     });
+
+    //déclaration du graphique
+    this.initChart();
+  }
+
+  private initChart(): void{
+    const canvasElement = document.getElementById('chartHome') as HTMLCanvasElement;
+  this.chart = new Chart(canvasElement, {
+    type: this.chartType,
+    data: {
+      labels: this.chartLabels,
+      datasets: this.chartData,
+    },
+    options: {
+      plugins: {
+        legend: {
+          onClick: (event, chartElement) => this.onChartClick(event, chartElement),
+        },
+      },
+    },
+  });
   }
 
   /**

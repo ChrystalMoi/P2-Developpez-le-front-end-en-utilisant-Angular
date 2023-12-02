@@ -11,7 +11,7 @@ import { AppTitleComponent } from '../app/components/app-title/app-title.compone
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NotFoundComponent, DetailComponent, AppTitleComponent],
-  imports: [NgChartsModule, BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, NgChartsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
