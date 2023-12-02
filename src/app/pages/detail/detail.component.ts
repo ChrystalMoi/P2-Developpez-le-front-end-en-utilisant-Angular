@@ -4,10 +4,10 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Country } from 'src/app/core/models/Country';
 import { Participation } from 'src/app/core/models/Participation';
 import { switchMap, map, takeUntil } from 'rxjs/operators';
-import { ChartType } from 'chart.js';
+import { Chart, ChartType } from 'chart.js';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
-import { MedalService } from 'src/app/services/medal.service';
+import { MedalService } from 'src/app/core/services/medal.service';
 
 @Component({
   selector: 'app-detail',
@@ -25,7 +25,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   public lineChartLabels: string[] = [];
   public lineChartType: ChartType = 'line';
-  public lineChartLegend = true;
+  //public lineChartLegend = true;
   public lineChartData: { data: number[]; label: string }[] = [
     { data: [], label: 'Nombre de médailles par participation' }
   ];
@@ -41,8 +41,11 @@ export class DetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private olympicService: OlympicService,
     private router: Router,
-    private medalService: MedalService
+    private medalService: MedalService,
+    //private chart: Chart
   ) {}
+
+  private chart: Chart | undefined;
 
   /**
    * Méthode de rappel qui est invoquée immédiatement après que le détecteur de changement
@@ -71,6 +74,37 @@ export class DetailComponent implements OnInit, OnDestroy {
         this.medalService.updateMedalCount(totalMedalsByParticipation);
       }
     });
+
+    // Initialisation du graphique après que les données soit disponibles
+    this.initChart();
+
+    // Mise à jour du graphique après avoir initialisé les données
+    this.chart?.update();
+  }
+
+  private initChart(): void{
+    const canvasElement = document.getElementById('chartDetail') as HTMLCanvasElement;
+    this.chart = new Chart(canvasElement, {
+      type : this.lineChartType,
+      data: {
+        labels: this.lineChartLabels,
+        datasets: [{
+          data: this.lineChartData[0].data,
+          label: this.lineChartData[0].label,
+          borderColor: '#00838F', // Couleur de la ligne
+          backgroundColor: '#00838F', // Couleur de fond de la ligne
+          borderWidth: 2, // Largeur de la bordure
+          pointRadius: 6, // Taille des points
+          pointBackgroundColor: '#00838F', // Couleur des points
+          pointHoverRadius: 8, // Taille des points au survol
+          pointHoverBackgroundColor: '#ff0000', // Couleur des points au survol
+          borderCapStyle: 'round', // Style de la bordure à l'extrémité de la ligne (arrondi)
+          borderJoinStyle: 'round', // Style de la bordure aux jonctions des segments (arrondi)
+          tension: 0.3, // Tension de la courbe
+        }],
+      },
+      options: this.lineChartOptions
+    })
   }
 
   /**
@@ -83,10 +117,10 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Méthode pour le bouton retour à la page home
+   * Méthode pour le bouton retour à la page home (accueil)
    */
   goBack(): void {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 
   /**
