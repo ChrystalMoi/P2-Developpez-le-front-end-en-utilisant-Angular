@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Country } from 'src/app/core/models/Country';
 import { Participation } from 'src/app/core/models/Participation';
-import { switchMap, map, takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Chart, ChartType } from 'chart.js';
 import { Router } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MedalService } from 'src/app/core/services/medal.service';
 
 @Component({
@@ -16,7 +16,6 @@ import { MedalService } from 'src/app/core/services/medal.service';
 })
 
 export class DetailComponent implements OnInit, OnDestroy {
-  //private ngUnsubscribe = new Subject<void>();
   private souscription! : Subscription;
 
   public lineChartOptions = {
@@ -25,24 +24,23 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   public lineChartLabels: string[] = [];
   public lineChartType: ChartType = 'line';
-  //public lineChartLegend = true;
   public lineChartData: { data: number[]; label: string }[] = [
     { data: [], label: 'Nombre de médailles par participation' }
   ];
   public selectedCountry: Country | null = null;
 
   /**
-   * Injecte ActivatedRoute et OlympicService dans le constructeur
+   * Injecte ActivatedRoute, Router et MedalService et OlympicService dans le constructeur
    * @param route
    * @param olympicService
    * @param router
+   * @param medalService
    */
   constructor(
     private route: ActivatedRoute,
     private olympicService: OlympicService,
     private router: Router,
     private medalService: MedalService,
-    //private chart: Chart
   ) {}
 
   private chart: Chart | undefined;

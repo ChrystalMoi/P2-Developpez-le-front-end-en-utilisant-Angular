@@ -66,17 +66,15 @@ export class HomeComponent implements OnInit {
   public numberOfCountries: number | null = null;
 
   /**
-   * Injection du service OlympicService dans le constructeur
+   * Injection du service OlympicService + Router + MedalsService dans le constructeur
    * @param olympicService
    * @param router
    * @param medalService
-   * @param chart
    */
   constructor(
     private olympicService: OlympicService,
     private router: Router,
     private medalService: MedalService,
-    //private chart: Chart
   ) {
     console.log("Router service:", router);
   }
@@ -159,6 +157,10 @@ export class HomeComponent implements OnInit {
 
   }
 
+  /**
+   * Initialisation du grachique de la page Home
+   * Récupération de l'élément canvas du html home.component.html
+   */
   private initChart(): void{
     const canvasElement = document.getElementById('chartHome') as HTMLCanvasElement;
     this.chart = new Chart(canvasElement, {
@@ -200,7 +202,6 @@ export class HomeComponent implements OnInit {
 
           // Navigue vers la page de détail du pays sélectionné
           this.router.navigate(['/detail', selectedCountryId]);
-          //this.router.navigateByUrl(`/detail/${selectedCountryId}`);
 
           console.log("detail id");
         }
